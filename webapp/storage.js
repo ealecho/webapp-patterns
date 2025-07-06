@@ -11,7 +11,7 @@ export const LocalStorage = {
         }
     },
     save() {
-        console.log(todoList.items);
+        //console.log(todoList.items);
         const array = Array.from(todoList.items);
         localStorage.setItem("todos", JSON.stringify(array));
     }
