@@ -1,7 +1,24 @@
+import { TodoList } from "./webapp/classes.js";
+import { Command, CommandExecutor } from "./webapp/command.js";
+
 globalThis.DOM = {};
 
 //easy access withing this file
 const DOM = globalThis.DOM;
+
+function renderList() {
+    const todos = TodoList.getInstance();
+    DOM.todoList.innerHTML = ""
+    for (let todo of todos.items) {
+        const listItem = document.createElement('li');
+        listItem.className = 'todo-item';
+        listItem.innerHTML = `${todo.text}
+                <button class="delete-btn">Delete</button>
+        `;
+        listItem.dataset.text = todo.text;
+        DOM.todoList.appendChild(listItem);
+    }
+}
 
 document.addEventListener('DOMContentLoaded', ()=> {
     //Create references we will need later
@@ -12,6 +29,19 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     //Event listeners
     DOM.addBtn.addEventListener('click', () => {
-        //TODO
+        const cmd = new Command(Command.ADD);
+        CommandExecutor.execute(cmd);
     });
-})
+
+    DOM.todoList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('delete-btn')) {
+            const todo = event.target.parentNode.dataset.text;
+            const cmd = new Command(Command.DELETE, [todo]);
+            CommandExecutor.execute(cmd);
+        }
+    });
+
+    //Rendering on DOM content loaded, and when the list changes
+    renderList();
+    TodoList.getInstance().addObserver(renderList);
+});
