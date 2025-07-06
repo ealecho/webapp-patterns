@@ -24,9 +24,9 @@ export const CommandExecutor = {
                 const todoText = todoInput.value.trim();
                 const itemToAdd = todoList.find(todoText);
 
-                if (todoText!=='' && itemToAdd===null) {
+                if (todoText!=='' && itemToAdd==null) {
                     todoInput.value = '';
-                    todoList.add(new TodoItem(todoText))
+                    todoList.add(new TodoItem(todoText));
                 }
                 break;
             case Commands.DELETE:

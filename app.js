@@ -1,5 +1,5 @@
 import { TodoList } from "./webapp/classes.js";
-import { Command, CommandExecutor } from "./webapp/command.js";
+import { Command, CommandExecutor, Commands } from "./webapp/command.js";
 
 globalThis.DOM = {};
 
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     //Event listeners
     DOM.addBtn.addEventListener('click', () => {
-        const cmd = new Command(Command.ADD);
+        const cmd = new Command(Commands.ADD);
         CommandExecutor.execute(cmd);
     });
 
