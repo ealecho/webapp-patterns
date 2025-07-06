@@ -1,5 +1,6 @@
 import { TodoList } from "./webapp/classes.js";
 import { Command, CommandExecutor, Commands } from "./webapp/command.js";
+import { LocalStorage } from "./webapp/storage.js";
 
 globalThis.DOM = {};
 
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     DOM.todoList.addEventListener('click', (event) => {
         if (event.target.classList.contains('delete-btn')) {
             const todo = event.target.parentNode.dataset.text;
-            const cmd = new Command(Command.DELETE, [todo]);
+            const cmd = new Command(Commands.DELETE, [todo]);
             CommandExecutor.execute(cmd);
         }
     });
@@ -44,4 +45,23 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //Rendering on DOM content loaded, and when the list changes
     renderList();
     TodoList.getInstance().addObserver(renderList);
+
+    //save to local storage
+    LocalStorage.load()
+});
+
+
+document.addEventListener('keydown', function(event){
+    if (event.ctrlKey && event.key === 'p') {
+        event.preventDefault();
+        const cmd = new Command(Commands.ADD);
+        CommandExecutor.execute(cmd);
+    }
+
+    if (event.ctrlKey && event.key === 'z') {
+        event.preventDefault(); 
+        const cmd = new Command(Commands.UNDO);
+        CommandExecutor.execute(cmd);
+    } 
+    
 });
